@@ -1,2 +1,46 @@
 # Machine-Learning
-依照sklearn机器学习框架标准,对一些机器学习算法自行封装.
+**In order to deepen the understanding of Machine_learning algorithm,package a
+tool by myself.**
+Includes:
+
+
+1.KNN(K-Neighbors-Classifier)
+
+
+2.train_test_split
+
+
+3.Feature Scaler
+
+
+4.Linear Regression
+
+
+5.metrics(MSE,RMSE,MAE,r2_square,accuracy_score,F1_Score)
+
+
+6.GD(SGD)
+
+
+7.PCA
+
+
+8.curve(Learning_curve,Decision_boundary_curve)
+
+
+9.Logistic Regression
+
+
+10.Confusion_matrix(&precision&recall)
+
+
+11.SVM
+
+
+
+Thanks for your reading and please give your advice if you think exist something wrong.
+Please send your message to the "CuiZhenKai@163.com"
+
+
+
+
