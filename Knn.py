@@ -34,14 +34,14 @@ class KNeighborsClassifier:
                 "The process fit should do before predict"
 
         y_predict = [self._doPredict(x) for x in x_predict]
-        return y_predict
+        return np.array(y_predict)
 
     def _doPredict(self,x):
         '''check'''
-        assert x.shape[1] == self._X_train.shape[1],\
+        assert x.shape[0] == self._X_train.shape[1],\
                 "The size must be valid"
 
-        distances = [sqrt(np.sum((x - self._X_train)**2)) for x_train in self._X_train]
+        distances = [sqrt(np.sum((x - x_train)**2)) for x_train in self._X_train]
         sortedIndex = np.argsort(distances)
         topK = [self._y_train[i] for i in sortedIndex[:self.k]]
         return Counter(topK).most_common(1)[0][0]
