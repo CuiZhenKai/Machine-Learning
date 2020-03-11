@@ -39,7 +39,6 @@ class SimpleLinearRegression:
     def __repr__(self):
         return "SimpleLinearRegression()"
 
-
 class LinearRegression:
     def __init__(self):
         self._theta = None
@@ -187,5 +186,82 @@ class LinearRegression:
 
     def __repr__(self):
         return "LinearRegression()"
+
+
+class LogisticRegression:
+
+    def __init__(self):
+        self.coef_ = None
+        self.intercept_ = None
+        self._theta = None
+
+    '''tool function'''
+    def _sigmod(self,t):
+        return 1. / (1. + np.exp(-t))
+
+    '''use the gradient to fit the model'''
+    def fit(self,X_train,y_train,eta=0.01,n_iters = 1e4):
+
+        '''check'''
+        assert X_train.shape[0] == y_train.shape[0],\
+                "the size must be valid"
+
+        def J(theta,X_b,y):
+            y_hat = self._sigmod(X_b.dot(theta))
+            try:
+                return -np.sum(y*np.log(y_hat) + (1-y)*np.log(1-y_hat)) / len(y)
+            except:
+                return float('inf')
+
+        def DJ(theta,X_b,y):
+            return X_b.T.dot(self._sigmod(X_b.dot(theta)) - y) / len(X_b)
+
+        def gradient_decent(X_b,y,initial_theta,eta,n_iters=1e4,epsilon = 1e-8):
+            theta = initial_theta
+            cur_iter = 0
+
+            while cur_iter < n_iters:
+                last_theta = theta
+                gradient = DJ(theta,X_b,y)
+                theta = theta - eta*gradient
+                while(abs(J(theta,X_b,y) - J(last_theta,X_b,y))):
+                    break
+                cur_iter += 1
+
+            return theta
+
+        '''main step'''
+        X_b = np.hstack([np.ones((len(X_train),1)),X_train])
+        initial_theta = np.zeros(X_b.shape[1])
+        self._theta = gradient_decent(X_b,y_train,initial_theta,eta,n_iters)
+        self.coef_ = self._theta[1:]
+        self.intercept_ = self._theta[0]
+        return self
+
+    def predict_proda(self,X_predict):
+        '''check'''
+        assert self.coef_ is not None and self.intercept_ is not None,\
+                "predict after fit"
+        assert X_predict.shape[1] == len(self.coef_),\
+                "the size must be valid"
+
+        X_b = np.hstack([np.ones((len(X_predict), 1)), X_predict])
+        return self._sigmod(X_b.dot(self._theta))
+
+    '''real predict'''
+    def predict(self,X_predict):
+        '''check'''
+        assert self.coef_ is not None and self.intercept_ is not None, \
+            "predict after fit"
+        assert X_predict.shape[1] == len(self.coef_), \
+            "the size must be valid"
+
+        proda = self.predict_proda(X_predict)
+        return np.array(proda>=0.5,dtype='int')
+
+    def __repr__(self):
+        return "LogisticRegression()"
+
+
 
 
