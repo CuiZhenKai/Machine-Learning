@@ -60,3 +60,48 @@ def plot_decision_boundary(model, axis):
     custom_cmap = ListedColormap(['#EF9A9A', '#FFF59D', '#90CAF9'])
 
     plt.contourf(x0, x1, zz, linewidth=5, cmap=custom_cmap)
+
+'''Confusion Matrix'''
+
+def TN(y_true,y_predict):
+    '''check'''
+    assert len(y_true) == len(y_predict)
+    return np.sum((y_true==0) & (y_predict==0))
+
+def TP(y_true,y_predict):
+    '''check'''
+    assert len(y_true) == len(y_predict)
+    return np.sum((y_true==1) & (y_predict==1))
+
+def FN(y_true,y_predict):
+    '''check'''
+    assert len(y_true) == len(y_predict)
+    return np.sum((y_true==1) & (y_predict==0))
+
+def FP(y_true,y_predict):
+    '''check'''
+    assert len(y_true) == len(y_predict)
+    return np.sum((y_true==0) & (y_predict==1))
+
+def confusion_matrix(y_true,y_predict):
+    return np.array([
+        [TN(y_true,y_predict),FP(y_true,y_predict)],
+        [FN(y_true,y_predict),TP(y_true,y_predict)]
+    ])
+
+def Precision(y_true,y_predict):
+    tp = TP(y_true,y_predict)
+    fp = FP(y_true,y_predict)
+    try:
+        return tp / (tp+fp)
+    except:
+        return 0.0
+
+def Recall(y_true,y_predict):
+    fn = FN(y_true,y_predict)
+    tp = TP(y_true,y_predict)
+    try:
+        return tp / (tp + fn)
+    except:
+        return 0.0
+
