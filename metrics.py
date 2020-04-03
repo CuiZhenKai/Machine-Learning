@@ -62,7 +62,6 @@ def plot_decision_boundary(model, axis):
     plt.contourf(x0, x1, zz, linewidth=5, cmap=custom_cmap)
 
 '''Confusion Matrix'''
-
 def TN(y_true,y_predict):
     '''check'''
     assert len(y_true) == len(y_predict)
@@ -105,3 +104,20 @@ def Recall(y_true,y_predict):
     except:
         return 0.0
 
+
+def TPR(y_true,y_predict):
+    fn = FN(y_true,y_predict)
+    tp = TP(y_true,y_predict)
+
+    try:
+        return tp / (tp + fn)
+    except:
+        return 0.0
+
+def FPR(y_true,y_predict):
+    fp = FP(y_true, y_predict)
+    tn = TN(y_true, y_predict)
+    try:
+        return fp / (fp + tn)
+    except:
+        return 0.0
